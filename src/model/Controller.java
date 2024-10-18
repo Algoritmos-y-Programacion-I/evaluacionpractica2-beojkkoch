@@ -7,6 +7,7 @@ public class Controller {
     public Controller() {
 
         pillars = new Pillar[4];
+        pillarsType();
 
     }
 
@@ -18,7 +19,43 @@ public class Controller {
     }
 
 
-    /**public String verifyProjectInPillar(String id){
+
+    /**
+     * Descripcion: Permite crear y añadir un Project en un Pillar en el sistema
+     * 
+     * @return boolean true si se logra añadir el Project en el Pillar, false en caso
+     *         contrario
+     */
+    public boolean registerProjectInPillar(int pillarType, String id, String name, String description, int status) {
+
+
+        NStatus st = NStatus.ACTIVO;
+        switch(status){
+            case 1:
+            st = NStatus.ACTIVO;
+            break;
+            case 2:
+            st = NStatus.INACTIVO;
+            break;
+        default:
+            System.out.println("Estado no válido, se establecerá ACTIVO por defecto.");
+
+        }
+
+        
+        Project newProject = new Project(id, name, description, st);
+        boolean verify = pillars[pillarType-1].registerProject(newProject);
+        if(verify){
+            return true;
+        }
+        return false;
+        
+        
+    }
+
+
+
+    public String verifyProjectInPillar(String id){
 
         for(Pillar pillar : pillars){
             for(Project project : pillar.getProjects()){
@@ -30,37 +67,6 @@ public class Controller {
     }return null;
     
 }
-
-
-    /**
-     * Descripcion: Permite crear y añadir un Project en un Pillar en el sistema
-     * 
-     * @return boolean true si se logra añadir el Prject en el Pillar, false en caso
-     *         contrario
-     */
-    public boolean registerProjectInPillar(int pillarType, String id, String name, String description, int status) {
-
-
-
-        NStatus st = NStatus.ACTIVO;
-        switch(status){
-            case 1:
-            st = NStatus.ACTIVO;
-            break;
-            case 2:
-            st = NStatus.INACTIVO;
-            break;
-        }
-        Project newProject = new Project(id, name, description, st);
-        boolean verify = pillars[pillarType-1].registerProject(newProject);
-        if(verify){
-            return true;
-        }
-        return false;
-        
-        
-    }
-
     /**
      * Descripcion: Calcula el valor en dinero correspondiente al arrendamiento
      * mensual de todos los Edificios
@@ -73,16 +79,17 @@ public class Controller {
 
         String query = "";
 
-        for(int i=0; i<pillars.length; i++){
-            if(pillars[i].equals(pillarType)){
-                
-                
+        Pillar selectPillar = pillars[pillarType - 1];
+
+        
+        
+        for (int i = 0; i < selectPillar.getProjects().length; i++) {
+            Project project = selectPillar.getProjects()[i];
+            if (project != null) { 
+                query += selectPillar.getName()+ " - " +project.getId() + " - " + project.getName() + " - " + project.getDescription() + " - " + project.getStatus() + "\n";
+                        
             }
-
-
         }
-
-
         return query;
 
     }

@@ -21,19 +21,6 @@ public class Pillar {
 
 
 
-    public Project searchProject(String id){
-
-        for(int l=0; l<projects.length; l++){
-
-            if(projects[l].getId().equalsIgnoreCase(id)){
-                return projects[l]; 
-            }
-
-
-        }
-        return null;
-    }
-
     /**
      * Descripcion: Añade un nuevo Project al arreglo projects
      * pre: El arreglo projects debe estar inicializado
@@ -46,7 +33,7 @@ public class Pillar {
      */
     public boolean registerProject(Project newProject) {
         for(int i=0; i<projects.length; i++){
-            if(projects[i]!=null){
+            if(projects[i]==null){
                 newProject = projects[i];
                 return true;
             }
